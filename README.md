@@ -6,7 +6,8 @@ neo4j-social-cargomedia
 This is a development repo with tiny API done for a test for a company.
 Stack:
 
-[Slim Framework](http://www.slimframework.com/)
+[Slim Framework](http://www.slimframework.com/) 
+
 [Neo4j](http://www.neo4j.org/)
 
 Tests done with:
