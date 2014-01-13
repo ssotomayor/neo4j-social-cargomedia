@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web UI</title>
+    <style>
+        html, body {
+            height: 100%;
+            font-size: 15px;
+            color: #999999;
+        }
+        html, body {
+            font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+            background: #EEE;
+        }
+    </style>
+    <link href="http://semantic-ui.com/build/packaged/css/semantic.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://semantic-ui.com/build/packaged/javascript/semantic.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.get( "http://localhost/cargomedia/api/index.php/get_all/", function( data ) {
+                $(data).each(function(index, el){
+                    $('#menu').append($('<a class="item">'+el.firstName+ ' ' +el.surname+ '<i class="users icon"></i></a>').on('click', function(i){
+                     get_data(el.id);
+                    }))
+                })
+            });
+        });
+
+        function get_data(id){
+            $("#name").html("ID: " + id);
+            $("#friends").html(" ");
+            $("#fof").html(" ");
+            $("#suggested").html(" ");
+            $.get( "http://localhost/cargomedia/api/index.php/get_friends/" + id, function( data ) {
+                $(data).each(function(index, el){
+                    $("#friends").append(el.firstName + ' ' + el.surname + ', ');
+                })
+            });
+
+            $.get( "http://localhost/cargomedia/api/index.php/get_fof/" + id, function( data ) {
+                $(data).each(function(index, el){
+                    $("#fof").append(el.firstName + ' ' + el.surname + ', ');
+                })
+            });
+
+            $.get( "http://localhost/cargomedia/api/index.php/get_suggested_friends/" + id, function( data ) {
+                $(data).each(function(index, el){
+                    if(el.firstName === undefined){
+                        el.firstName = 'No ';
+                        el.surname = 'Results';
+                    }
+                    $("#suggested").append(el.firstName + ' ' + el.surname + ', ');
+                })
+                $("#data_block").transition('bounce');
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="ui two column grid">
+<div class="column">
+    <div id="menu" class="ui vertical pointing menu">
+
+    </div>
+</div>
+
+<div class="column">
+    <div id="data_block" class="ui segment">
+        <h3 id="name" class="ui header">
+        </h3>
+        <h4 class="ui header">
+            Friends:
+        </h4>
+        <span id="friends"></span>
+        <h4 class="ui header">
+            Friends of Friends:
+        </h4>
+        <span id="fof"></span>
+        <h4 class="ui header">
+            Suggested:
+        </h4>
+        <span id="suggested"></span>
+    </div>
+</div>
+</div>
+</body>
+</html>
